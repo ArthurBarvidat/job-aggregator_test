@@ -27,6 +27,9 @@ def get_db():
             status_code=503,
             detail="psycopg2 non disponible — ce endpoint nécessite Docker",
         )
+    database_url = os.getenv("DATABASE_URL")
+    if database_url:
+        return psycopg2.connect(database_url, sslmode="require")
     return psycopg2.connect(
         host=os.getenv("DB_HOST"),
         port=os.getenv("DB_PORT"),
